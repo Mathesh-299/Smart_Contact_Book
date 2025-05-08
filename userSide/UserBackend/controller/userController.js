@@ -92,23 +92,33 @@ exports.login = async (req, res) => {
 
     try {
         const user = await User.findOne({ email });
-        if (!user) return res.status(404).json({ message: "Invalid email" });
-
-        // Compare password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(404).json({ message: "Wrong password" });
-
-        if (!user.isVerified) {
-            return res.status(400).json({ message: "Please verify your email via OTP" });
+        if (!user) {
+            return res.status(401).json({ message: "Invalid email or password" });
         }
 
-        // Generate JWT token
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid email or password" });
+        }
+
+        if (!user.isVerified) {
+            return res.status(403).json({ message: "Please verify your email via OTP" });
+        }
+
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-        res.status(200).json({ token, user: { username: user.username, email: user.email, userId: user._id, phoneNumber: user.phoneNumber } });
+
+        const { username, _id: userId, phoneNumber,gender,dob,address } = user;
+        res.status(200).json({
+            token,
+            user: { username, email, userId, phoneNumber,gender,dob,address }
+        });
+
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error("Login Error:", error);
+        res.status(500).json({ message: "Server error. Please try again later." });
     }
 };
+
 
 // Resend OTP if OTP not expired
 exports.resendOtp = async (req, res) => {
@@ -159,9 +169,9 @@ exports.getProfile = async (req, res) => {
 
 
 
-exports.editProfile =[authenticateJWT, async (req, res) => {
+exports.editProfile = [authenticateJWT, async (req, res) => {
     // Destructure the updated user details from the request body
-    const { username, email, phoneNumber } = req.body;
+    const { username, email, phoneNumber,gender,dob,address } = req.body;
     const userId = req.user.id;  // Use the user ID from the decoded token
 
     // Validate input fields
@@ -173,7 +183,7 @@ exports.editProfile =[authenticateJWT, async (req, res) => {
         // Find and update the user in the database
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { username, email, phoneNumber },
+            { username, email, phoneNumber,gender,dob,address },
             { new: true }  // Return the updated user
         );
 
