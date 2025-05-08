@@ -9,9 +9,9 @@ import Email from '../Assests/images/email.png';
 import Password from '../Assests/images/eye.png';
 import Phone from '../Assests/images/phone-call.png';
 import Username from '../Assests/images/profile.png';
+import Register from '../Assests/images/register.jpg';
 import Image from '../Assests/images/registration.png';
 import Arrow from '../Assests/images/right-arrow.png';
-
 const Registration = () => {
     const navigate = useNavigate();
     const formRef = useRef();
@@ -130,8 +130,8 @@ const Registration = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-5rem)] bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 flex justify-center items-center px-4">
-            <div className="w-full max-w-lg bg-white shadow-2xl rounded-3xl p-8">
+        <div className="min-h-[calc(100vh-5rem)] bg-cover bg-center flex justify-center items-center px-4" style={{ backgroundImage: `url(${Register})`, width:'100vw'}}>
+            <div className="w-full max-w-lg bg-white/35 shadow-2xl rounded-3xl p-8">
                 <div className="text-center mb-6">
                     <img src={Image} alt="Logo" className="mx-auto w-12 h-12" />
                     <h1 className="text-3xl font-extrabold text-gray-800 mt-2">Create Your Account</h1>
@@ -140,7 +140,7 @@ const Registration = () => {
 
                 <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
                     {/* Username */}
-                    <div className="relative">
+                    <div className="relative mb-5 hover:bg-white/20 rounded-xl">
                         <img src={Username} alt="Username Icon" className="absolute left-3 top-3 w-5 h-5 opacity-60" />
                         <input
                             type="text"
@@ -153,7 +153,7 @@ const Registration = () => {
                     </div>
 
                     {/* Email */}
-                    <div className="relative">
+                    <div className="relative mb-5  hover:bg-white/20 rounded-xl">
                         <img src={Email} alt="Email Icon" className="absolute left-3 top-3 w-5 h-5 opacity-60" />
                         <input
                             type="email"
@@ -169,7 +169,7 @@ const Registration = () => {
                     </div>
 
                     {/* Phone */}
-                    <div className="relative">
+                    <div className="relative mb-5 hover:bg-white/20 rounded-xl">
                         <img src={Phone} alt="Phone Icon" className="absolute left-3 top-3 w-5 h-5 opacity-60" />
                         <input
                             type="tel"
@@ -185,7 +185,7 @@ const Registration = () => {
                     </div>
 
                     {/* Password */}
-                    <div className="relative flex items-center">
+                    <div className="relative flex items-center mb-5 hover:bg-white/20 rounded-xl">
                         <img src={Password} alt="Password Icon" className="absolute left-3 top-3 w-5 h-5 opacity-60" />
                         <input
                             type={showPassword ? 'text' : 'password'}
@@ -205,7 +205,7 @@ const Registration = () => {
                     </div>
 
                     {/* Confirm Password */}
-                    <div className="relative flex items-center">
+                    <div className="relative flex items-center mb-5 hover:bg-white/20 rounded-xl">
                         <img src={Password} alt="Confirm Password Icon" className="absolute left-3 top-3 w-5 h-5 opacity-60" />
                         <input
                             type={showPassword1 ? 'text' : 'password'}
@@ -231,7 +231,7 @@ const Registration = () => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className={`w-full py-3 rounded-xl font-semibold text-white transition duration-200 flex justify-center items-center gap-2 
+                        className={`w-full py-3 rounded-xl font-semibold text-white transition duration-200 flex justify-center items-center gap-2
                             ${isLoading
                                 ? 'bg-gray-400 cursor-not-allowed'
                                 : 'bg-gradient-to-r from-blue-500 to-indigo-500 hover:scale-[1.02]'}`}
