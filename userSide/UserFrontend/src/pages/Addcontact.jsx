@@ -1,18 +1,41 @@
 import AddchartIcon from '@mui/icons-material/Addchart';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 const Addcontact = () => {
     const navigate = useNavigate();
-
-    const handleForm = () =>{
+    const [user, setUser] = useState(null);
+    const handleForm = () => {
         navigate('/form');
     }
-    useEffect(()=>{
-        const isLoggedIn = localStorage.getItem("isLoggedIn")==="true";
-        if(!isLoggedIn){
-            navigate("/login");
-        }
-    },[navigate]);
+    useEffect(() => {
+        const fetchData = () => {
+            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+            const isAdmin = JSON.parse(localStorage.getItem("user"));
+
+            if (isLoggedIn) {
+                // If the user is logged in, and if they are an admin, stay on the dashboard
+                if (isAdmin && isAdmin.role === "user") {
+                    setUser(isAdmin);
+                    console.log(isAdmin.role);
+                } else {
+                    localStorage.removeItem("isLoggedIn");
+                    localStorage.removeItem("user");
+                    toast.success("Logged out successfully");
+                    navigate("/login");
+                }
+            } else {
+                // If not logged in, navigate to login page
+                navigate("/login");
+            }
+        };
+
+        fetchData();
+    }, [navigate]);
+
+
+    // const userValue = user?.role;
+    // console.log(userValue)
     return (
         <>
             <div className=' w-screen min-h-[calc(100vh-5rem)]  bg-gradient-to-r from-blue-300 to-blue-100'>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaBirthdayCake, FaEnvelope, FaHome, FaPhone, FaSignOutAlt, FaTransgender, FaUserEdit } from 'react-icons/fa';
+import { FaBirthdayCake, FaEnvelope, FaHome, FaPhone, FaSignOutAlt, FaTimes, FaTransgender, FaUserEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import BG from '../Assests/images/contact.jpg';
@@ -25,7 +25,7 @@ const Profile = () => {
             navigate("/login");
         } else {
             const userData = JSON.parse(storedUser);
-            
+
             setUser(userData);
             setFormData({
                 username: userData.username,
@@ -78,6 +78,16 @@ const Profile = () => {
             <div className="absolute inset-0 bg-black/60 z-0" />
 
             <div className="relative z-10 bg-white rounded-3xl shadow-2xl backdrop-blur-lg max-w-5xl w-full flex flex-col md:flex-row overflow-hidden">
+
+                {/* Close Icon */}
+                <button
+                    onClick={() => navigate("/")}
+                    className="absolute top-4 right-4 text-gray-600 hover:text-red-600 text-2xl z-20"
+                    title="Close Profile"
+                >
+                    <FaTimes />
+                </button>
+
                 {/* Sidebar */}
                 <div className="md:w-1/3 bg-gradient-to-br from-blue-700 to-blue-900 text-white p-6 flex flex-col items-center justify-center text-center">
                     <div className="w-28 h-28 rounded-full bg-white text-blue-800 flex items-center justify-center text-4xl font-bold mb-4 shadow-lg">
@@ -104,7 +114,7 @@ const Profile = () => {
                                     <div key={field}>
                                         <label className="block font-medium capitalize mb-1">{field.replace(/([A-Z])/g, ' $1')}:</label>
                                         <input
-                                            type="text"
+                                            type={field === 'dob' ? 'date' : 'text'}
                                             name={field}
                                             value={formData[field]}
                                             onChange={handleInputChange}
@@ -144,7 +154,6 @@ const Profile = () => {
             </div>
         </div>
     );
-
 };
 
 export default Profile;

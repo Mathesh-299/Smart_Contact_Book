@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Reusable FeatureCard component
@@ -14,7 +13,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/contact');
+        navigate('/addcontact');
     };
 
     return (

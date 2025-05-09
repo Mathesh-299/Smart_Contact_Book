@@ -10,6 +10,7 @@ import Password from '../Assests/images/eye.png';
 import Image from '../Assests/images/log-in.png';
 import LoginPic from '../Assests/images/login.jpg';
 import Arrow from '../Assests/images/right-arrow.png';
+
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((prev) => !prev);
@@ -19,32 +20,27 @@ const Login = () => {
     const [emailValid, setEmailValid] = useState(false);
     const [passwordValue, setPasswordValue] = useState('');
     const [passwordValid, setPasswordValid] = useState(false);
-    // const [loginError, setLoginError] = useState('');
-    // const [successMessage, setSuccessMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const formRef = useRef();
 
     useEffect(() => {
-        if (localStorage.getItem("isLoggedIn") === "true") {
-            navigate('/profile');
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        const token = localStorage.getItem("token");
+        if (isLoggedIn && token) {
+            navigate('/');
         }
     }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // setLoginError('');
-        // setSuccessMessage('');
-
-        // if (!emailValid) return setLoginError("Enter a valid email.");
-        // if (!passwordValid) return setLoginError("Enter a valid password.");
 
         try {
             setLoading(true);
             const res = await API.post("/user/login", {
-                email: emailValue,
-                password: passwordValue
+                email: emailValue.trim(),
+                password: passwordValue.trim()
             });
-            console.log(res);
+
             const { token, user } = res.data;
             localStorage.setItem("token", token);
             localStorage.setItem("isLoggedIn", "true");
@@ -56,15 +52,18 @@ const Login = () => {
             setPasswordValue('');
             setEmailValid(false);
             setPasswordValid(false);
-            
+
             setTimeout(() => {
-                navigate('/');
-            }, 4500);
+                // Optional: role-based redirection
+                if (user.role === 'admin') {
+                    navigate('/dashboard');
+                } else {
+                    navigate('/');
+                }
+            }, 1500);
         } catch (err) {
-            const errorMessage = err.res?.data?.message || "Something went wrong.";
-            // if(passwordValue!==user.password){
-                toast.error("Invalid email or password");
-            // }
+            const errorMessage = err.response?.data?.message || "Invalid email or password";
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -96,7 +95,7 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-5rem)] bg-cover bg-center flex justify-center items-center px-4" style={{ backgroundImage: `url(${LoginPic})`, width:'100vw'}}>
+        <div className="min-h-[calc(100vh-5rem)] bg-cover bg-center flex justify-center items-center px-4" style={{ backgroundImage: `url(${LoginPic})`, width: '100vw' }}>
             <div className="w-full max-w-md bg-white/35 p-8 rounded-2xl shadow-2xl transition-transform hover:scale-[1.02] pt-3">
                 <div className="flex items-center gap-3 mb-6">
                     <img src={Image} width="45" height="45" alt="Logo" />
@@ -138,28 +137,21 @@ const Login = () => {
                                 required
                             />
                             <div className="absolute right-2 top-1/2 -translate-y-1/2">
-                                <IconButton onClick={handleClickShowPassword} size="small">
+                                <IconButton onClick={handleClickShowPassword} size="small" aria-label="Toggle password visibility">
                                     {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
                                 </IconButton>
                             </div>
                         </div>
                         {!passwordValid && passwordValue && (
-                            <p className="text-red-500 text-xs mt-1 pl-1 animate-pulse">Password must include uppercase, lowercase, number, and special character.</p>
+                            <p className="text-red-500 text-xs mt-1 pl-1 animate-pulse">
+                                Password must include uppercase, lowercase, number, and special character.
+                            </p>
                         )}
                     </div>
 
-                    {/* Error & Success Messages
-                    {loginError && (
-                        <p className="text-red-600 text-center text-sm font-semibold animate-shake">{loginError}</p>
-                    )}
-                    {successMessage && (
-                        <p className="text-green-600 text-center text-sm font-semibold animate-pulse">{successMessage}</p>
-                    )} */}
-
-                    {/* Submit Button */}
                     <button
                         type="submit"
-                        disabled={loading}
+                        disabled={loading || !emailValid || !passwordValid}
                         className={`w-full py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 pt-2 pb-3 mb-5
                             ${loading
                                 ? 'bg-gray-400 cursor-not-allowed text-white'

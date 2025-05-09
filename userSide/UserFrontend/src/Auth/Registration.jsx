@@ -88,7 +88,7 @@ const Registration = () => {
             return;
         }
 
-        setIsLoading(true); // 🟡 Set loading to true
+        setIsLoading(true);
 
         try {
             const result = await API.post('/user/register', {

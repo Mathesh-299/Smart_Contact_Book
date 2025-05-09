@@ -1,6 +1,7 @@
 import { Menu, User2, X } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Image from '../Assests/images/customer-service.png';
 
 const Navbar = () => {
@@ -38,7 +39,7 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("user");
-        alert("Logged out successfully");
+        toast.success("Logged out successfully");
         fetchUser(); // force update state
         navigate('/login');
     };
@@ -66,21 +67,27 @@ const Navbar = () => {
                         </Link>
                     ))}
 
-                    {isLoggedIn && user ? (
+                    {isLoggedIn && user && (
                         <>
+                            {user.role === 'admin' && (
+                                <Link to="/dashboard">
+                                    <button className="px-8 py-4 text-white font-bold bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-700 rounded-full shadow-lg hover:shadow-2xl hover:scale-110 focus:outline-hidden focus:ring-4 focus:ring-blue-400/50 transition-all duration-400 ease-in-out transform hover:brightness-110 hover:text-yellow-300">
+                                        Dashboard
+                                    </button>
+                                </Link>
+                            )}
                             <Link to="/profile">
                                 <button className="px-8 py-4 text-white font-bold bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-700 rounded-full shadow-lg hover:shadow-2xl hover:scale-110 focus:outline-hidden focus:ring-4 focus:ring-blue-400/50 transition-all duration-400 ease-in-out transform hover:brightness-110 hover:text-yellow-300">
                                     Profile
                                 </button>
-
                             </Link>
-                            {/* <button
-                                onClick={handleLogout}
-                                className="px-4 py-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-700"
-                            >
-                                Logout
-                            </button> */}
                         </>
+                    )}
+
+                    {isLoggedIn ? (
+                        <button onClick={handleLogout} className="px-4 py-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-700">
+                            Logout
+                        </button>
                     ) : (
                         <Link to="/login">
                             <button className="px-4 py-2 bg-green-600 text-white font-bold rounded-md hover:bg-green-700">
@@ -107,6 +114,11 @@ const Navbar = () => {
 
                     {isLoggedIn && user && (
                         <>
+                            {user.role === 'admin' && (
+                                <Link to="/dashboard" onClick={() => setIsOpen(false)}>
+                                    <div className="py-2 font-semibold text-white">Dashboard</div>
+                                </Link>
+                            )}
                             <Link to="/profile" onClick={() => setIsOpen(false)}>
                                 <div className="py-2 font-semibold text-white">Profile</div>
                             </Link>
