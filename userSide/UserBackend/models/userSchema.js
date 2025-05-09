@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
     gender: { type: String },
-    dob: { type: String },
+    dob: { type: Date },
     address: { type: String }
     // New field for OTP verification status
 });

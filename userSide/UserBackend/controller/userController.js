@@ -87,6 +87,8 @@ exports.verifyOtp = async (req, res) => {
 
 
 // Login with OTP check (after user is verified)
+// const jwt = require("jsonwebtoken");
+
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -96,6 +98,10 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
+        let role = "user";
+        if (email === "matheshm2909@gmail.com" && password === "Admin@123") {
+            role = "admin";
+        }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid email or password" });
@@ -105,12 +111,12 @@ exports.login = async (req, res) => {
             return res.status(403).json({ message: "Please verify your email via OTP" });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ id: user._id, role }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        const { username, _id: userId, phoneNumber,gender,dob,address } = user;
+        const { username, _id: userId, phoneNumber, gender, dob, address } = user;
         res.status(200).json({
             token,
-            user: { username, email, userId, phoneNumber,gender,dob,address }
+            user: { username, email, userId, phoneNumber, gender, dob, address, role }
         });
 
     } catch (error) {
@@ -118,6 +124,7 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: "Server error. Please try again later." });
     }
 };
+
 
 
 // Resend OTP if OTP not expired
@@ -167,11 +174,9 @@ exports.getProfile = async (req, res) => {
     }
 };
 
-
-
-exports.editProfile = [authenticateJWT, async (req, res) => {
-    // Destructure the updated user details from the request body
-    const { username, email, phoneNumber,gender,dob,address } = req.body;
+// Edit profile with JWT authentication
+exports.editProfile = async (req, res) => {
+    const { username, email, phoneNumber, gender, dob, address } = req.body;
     const userId = req.user.id;  // Use the user ID from the decoded token
 
     // Validate input fields
@@ -183,7 +188,7 @@ exports.editProfile = [authenticateJWT, async (req, res) => {
         // Find and update the user in the database
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { username, email, phoneNumber,gender,dob,address },
+            { username, email, phoneNumber, gender, dob, address },
             { new: true }  // Return the updated user
         );
 
@@ -198,4 +203,65 @@ exports.editProfile = [authenticateJWT, async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Error updating user profile' });
     }
-}];
+};
+
+exports.userCountValue = async (req, res) => {
+    try {
+        const userCount = await User.countDocuments();
+        res.status(200).json({ count: userCount });
+    }
+    catch {
+        res.status(400).json({ message: "Error to fetching user count" });
+    }
+};
+
+
+// Edit user (Admin route)
+exports.editUser = async (req, res) => {
+    const { username, email, phoneNumber, role } = req.body;
+    const userId = req.params.id;
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update user details
+        user.username = username || user.username;
+        user.email = email || user.email;
+        user.phoneNumber = phoneNumber || user.phoneNumber;
+        user.role = role || user.role;
+
+        await user.save();
+
+        res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error updating user', error: error.message });
+    }
+};
+
+// Delete user (Admin route)
+exports.deleteUser = async (req, res) => {
+    const {email} = req.body;
+
+    const  userId  = req.params.id;
+    // console.log(userId);
+    try {
+        const user = await User.findByIdAndDelete(userId);
+        const admin =await User.findOne(email);
+        if(admin){
+            return res.status(404).json({message:"Admin can't delete"});
+        }
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error deleting user', error: error.message });
+    }
+};
