@@ -17,7 +17,7 @@ const Home = () => {
     };
 
     return (
-        <div className="min-h-screen w-screen bg-gray-100">
+        <div className="min-h-screen w-full bg-gray-100">
             {/* Header/Navbar */}
 
             {/* Hero Section */}

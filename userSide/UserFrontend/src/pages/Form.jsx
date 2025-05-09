@@ -1,6 +1,6 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const ContactBook = () => {
     const [dataArray, setDataarray] = useState([]);
@@ -69,7 +69,7 @@ const ContactBook = () => {
             {/* Form Section */}
             {formVisible && (
                 <div className="max-w-lg w-full p-6 bg-white rounded-lg shadow-md shadow-purple-600 relative">
-                    <div className='w-full h-30 bg-purple-300 text-white flex justify-between items-center px-4 py-4 rounded-lg'>
+                    <div className='w-full h-14 bg-purple-300 text-white flex justify-between items-center px-4 py-4 rounded-lg'>
                         <h2 className="text-2xl font-bold text-blue-700">{isEditing ? "Edit Contact" : "Add New Contact"}</h2>
                         <button onClick={() => setFormVisible(false)}>
                             <FontAwesomeIcon icon={faXmark} className='w-5 h-5 text-blue-600 hover:text-red-400 ' />
@@ -77,7 +77,7 @@ const ContactBook = () => {
                     </div>
 
                     <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 pt-5">
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-7">
                             <input
                                 type="text"
                                 id="name"
@@ -90,7 +90,7 @@ const ContactBook = () => {
                             />
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-7">
                             <input
                                 type="email"
                                 id="email"
@@ -103,7 +103,7 @@ const ContactBook = () => {
                             />
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-7">
                             <input
                                 type="tel"
                                 id="phone"
@@ -116,7 +116,7 @@ const ContactBook = () => {
                             />
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-2 mb-7">
                             <input
                                 type="text"
                                 id="address"

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router';
 
 const About = () => {
@@ -8,7 +7,7 @@ const About = () => {
     }
 
     return (
-        <div className="min-h-screen w-screen bg-gradient-to-r from-blue-200 to-indigo-400 flex flex-col justify-center items-center text-white p-8">
+        <div className="min-h-screen w-full bg-gradient-to-r from-blue-200 to-indigo-400 flex flex-col justify-center items-center text-white p-8">
             {/* Title Section */}
             <div className="text-center mb-8">
                 <h1 className="text-5xl font-extrabold text-purple-800">About Smart Contact Book</h1>
