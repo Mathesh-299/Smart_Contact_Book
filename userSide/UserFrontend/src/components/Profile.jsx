@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FaBirthdayCake, FaEnvelope, FaHome, FaPhone, FaSignOutAlt, FaTimes, FaTransgender, FaUserEdit } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { FaBirthdayCake, FaEnvelope, FaHome, FaPhone, FaSignOutAlt, FaTimes, FaTransgender, FaUserEdit, FaUserPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import BG from '../Assests/images/contact.jpg';
@@ -25,7 +25,6 @@ const Profile = () => {
             navigate("/login");
         } else {
             const userData = JSON.parse(storedUser);
-
             setUser(userData);
             setFormData({
                 username: userData.username,
@@ -69,6 +68,16 @@ const Profile = () => {
             console.error(error);
             toast.error("Error updating profile");
         }
+    };
+
+    // Format date to DD/MM/YYYY
+    const formatDate = (date) => {
+        if (!date) return 'N/A';
+        const d = new Date(date);
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        return `${day}/${month}/${year}`;
     };
 
     if (!user) return null;
@@ -136,7 +145,7 @@ const Profile = () => {
                                 <div className="flex items-center gap-3"><FaEnvelope className="text-blue-600" /><span>{user.email}</span></div>
                                 <div className="flex items-center gap-3"><FaPhone className="text-green-600" /><span>{user.phoneNumber || 'N/A'}</span></div>
                                 <div className="flex items-center gap-3"><FaTransgender className="text-purple-600" /><span>{user.gender || 'Not specified'}</span></div>
-                                <div className="flex items-center gap-3"><FaBirthdayCake className="text-pink-500" /><span>{user.dob || 'N/A'}</span></div>
+                                <div className="flex items-center gap-3"><FaBirthdayCake className="text-pink-500" /><span>{formatDate(user.dob)}</span></div>
                                 <div className="flex items-center gap-3"><FaHome className="text-yellow-600" /><span>{user.address || 'Not provided'}</span></div>
 
                                 <div className="flex justify-between gap-4 mt-6">
@@ -145,6 +154,9 @@ const Profile = () => {
                                     </button>
                                     <button className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-md" onClick={() => setIsEditing(true)}>
                                         <FaUserEdit className="inline mr-1" /> Edit Profile
+                                    </button>
+                                    <button className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-md" onClick={() => navigate("/addcontact")}>
+                                        <FaUserPlus className="inline mr-1" /> Add to Contacts
                                     </button>
                                 </div>
                             </>
