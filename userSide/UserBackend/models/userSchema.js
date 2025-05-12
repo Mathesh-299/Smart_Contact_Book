@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     gender: { type: String },
     dob: { type: Date },
     address: { type: String }
-    // New field for OTP verification status
 });
 
 module.exports = mongoose.model('User', userSchema);

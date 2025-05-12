@@ -18,3 +18,4 @@ DB()
     });
 
 app.use('/api/user', require('./routes/user'));
+app.use('/api/contact',require("./routes/contact"));
