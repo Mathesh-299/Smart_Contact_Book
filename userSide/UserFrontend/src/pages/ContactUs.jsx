@@ -12,7 +12,7 @@ const ContactUs = () => {
 
     return (
         <div
-            className="min-h-[calc(100vh-5rem)]w-full flex items-center justify-center px-6 py-6 bg-cover bg-center"
+            className="min-h-[calc(100vh-5rem)] w-full flex items-center justify-center px-6 py-6 bg-cover bg-center"
             style={{
                 backgroundImage:
                     "url('https://images.unsplash.com/photo-1497493292307-31c376b6e479?auto=format&fit=crop&w=1950&q=80')",
@@ -35,7 +35,7 @@ const ContactUs = () => {
                             type="text"
                             placeholder="Your Name"
                             required
-                            className="pl-12 pr-4 py-3 w-full bg-white/80 text-gray-800 border border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                            className="pl-12 pr-4 py-3 w-full bg-white/80 text-gray-800 border border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition transform hover:scale-105 hover:border-indigo-400"
                         />
                     </div>
 
@@ -46,7 +46,7 @@ const ContactUs = () => {
                             type="email"
                             placeholder="Your Email"
                             required
-                            className="pl-12 pr-4 py-3 w-full bg-white/80 text-gray-800 border border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                            className="pl-12 pr-4 py-3 w-full bg-white/80 text-gray-800 border border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition transform hover:scale-105 hover:border-indigo-400"
                         />
                     </div>
 
@@ -56,7 +56,7 @@ const ContactUs = () => {
                             name="subject"
                             type="text"
                             placeholder="Subject"
-                            className="pl-12 pr-4 py-3 w-full bg-white/80 text-gray-800 border border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                            className="pl-12 pr-4 py-3 w-full bg-white/80 text-gray-800 border border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition transform hover:scale-105 hover:border-indigo-400"
                         />
                     </div>
 
@@ -67,7 +67,7 @@ const ContactUs = () => {
                             rows="4"
                             placeholder="Your Message"
                             required
-                            className="pl-12 pr-4 py-3 w-full bg-white/80 text-gray-800 border border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition resize-none"
+                            className="pl-12 pr-4 py-3 w-full bg-white/80 text-gray-800 border border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition transform hover:scale-105 hover:border-indigo-400 resize-none"
                         />
                     </div>
 
@@ -82,13 +82,13 @@ const ContactUs = () => {
                 {/* Social Icons */}
                 <div className="flex justify-center mt-10 space-x-6 text-white text-2xl drop-shadow-md">
                     <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-                        <FaInstagram className="hover:text-pink-400 transition-all duration-300 mr-4" />
+                        <FaInstagram className="hover:text-pink-400 transition-all duration-300 mr-4 transform hover:scale-125" />
                     </a>
                     <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
-                        <FaXTwitter className="hover:text-black transition-all duration-300 mr-4" />
+                        <FaXTwitter className="hover:text-black transition-all duration-300 mr-4 transform hover:scale-125" />
                     </a>
                     <a href="https://google.com" target="_blank" rel="noopener noreferrer">
-                        <FaGlobe className="hover:text-green-400 transition-all duration-300 mr-4" />
+                        <FaGlobe className="hover:text-green-400 transition-all duration-300 mr-4 transform hover:scale-125" />
                     </a>
                 </div>
             </div>

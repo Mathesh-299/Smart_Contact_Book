@@ -1,12 +1,13 @@
-import { Menu, User2, X } from 'lucide-react';
+import { LogInIcon, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Image from '../Assests/images/customer-service.png';
+import Image from '../Assests/images/logo.png';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [user, setUser] = useState(null);
+    const [loggingOut, setLoggingOut] = useState(false); // Loading state for logout
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -25,47 +26,43 @@ const Navbar = () => {
 
     useEffect(() => {
         fetchUser();
-
-        const handleStorageChange = () => {
-            fetchUser();
-        };
-
+        const handleStorageChange = () => fetchUser();
         window.addEventListener("storage", handleStorageChange);
-        return () => {
-            window.removeEventListener("storage", handleStorageChange);
-        };
-    }, [location]); // also refetch when route changes
+        return () => window.removeEventListener("storage", handleStorageChange);
+    }, [location]);
 
     const handleLogout = () => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("user");
+        setLoggingOut(true); // Set the logging out state
         setTimeout(() => {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("user");
             toast.success("Logged out successfully");
-            fetchUser(); // force update state
+            fetchUser();
             navigate('/login');
-        },4500)
-
+        }, 3000); // Wait 3 seconds before executing logout
     };
 
     const routes = ['/', '/about', '/contact'];
     const labels = ['Home', 'About', 'Contact Us'];
 
     return (
-        <nav className="w-full bg-gradient-to-r from-blue-500 to-blue-400">
+        <nav className="w-full bg-gradient-to-r from-blue-600 via-indigo-700 to-purple-700 shadow-md sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20">
+                {/* Logo */}
                 <Link to="/" className="flex items-center gap-3">
                     <img src={Image} width="40" alt="Logo" />
-                    <h1 className="text-white text-2xl sm:text-3xl font-bold">Smart Contact Book</h1>
+                    <h1 className="text-white text-2xl sm:text-3xl font-bold font-mono tracking-wide">Smart Contact Book</h1>
                 </Link>
 
+                {/* Desktop Links */}
                 <div className="hidden md:flex gap-6 items-center">
                     {routes.map((path, i) => (
                         <Link to={path} key={path}>
                             <button
-                                className={`relative px-4 py-2 text-white font-bold border-2 rounded-md overflow-hidden group ${location.pathname === path ? 'border-white' : 'border-transparent'}`}
+                                className={`relative px-4 py-2 rounded-lg text-white font-semibold hover:bg-white/10 transition-all duration-300 ${location.pathname === path ? 'border-b-4 border-yellow-400' : ''
+                                    }`}
                             >
-                                <span className="absolute inset-0 bg-gradient-to-l from-blue-600 to-blue-800 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0"></span>
-                                <span className="relative z-10">{labels[i]}</span>
+                                {labels[i]}
                             </button>
                         </Link>
                     ))}
@@ -74,13 +71,13 @@ const Navbar = () => {
                         <>
                             {user.role === 'admin' && (
                                 <Link to="/dashboard">
-                                    <button className="px-8 py-4 text-white font-bold bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-700 rounded-full shadow-lg hover:shadow-2xl hover:scale-110 focus:outline-hidden focus:ring-4 focus:ring-blue-400/50 transition-all duration-400 ease-in-out transform hover:brightness-110 hover:text-yellow-300">
+                                    <button className="px-6 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold hover:scale-105 hover:brightness-110 transition-all shadow-md">
                                         Dashboard
                                     </button>
                                 </Link>
                             )}
                             <Link to="/profile">
-                                <button className="px-8 py-4 text-white font-bold bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-700 rounded-full shadow-lg hover:shadow-2xl hover:scale-110 focus:outline-hidden focus:ring-4 focus:ring-blue-400/50 transition-all duration-400 ease-in-out transform hover:brightness-110 hover:text-yellow-300">
+                                <button className="px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold hover:scale-105 hover:brightness-110 transition-all shadow-md">
                                     Profile
                                 </button>
                             </Link>
@@ -88,28 +85,33 @@ const Navbar = () => {
                     )}
 
                     {isLoggedIn ? (
-                        <button onClick={handleLogout} className="px-4 py-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-700">
-                            Logout
+                        <button
+                            onClick={handleLogout}
+                            className={`px-5 py-2 font-semibold rounded-lg transition ${loggingOut ? 'bg-red-400 text-white' : 'bg-red-500 text-white hover:bg-red-600'}`}
+                        >
+                            {loggingOut ? 'Logging out...' : 'Logout'}
                         </button>
                     ) : (
                         <Link to="/login">
-                            <button className="px-4 py-2 bg-green-600 text-white font-bold rounded-md hover:bg-green-700">
-                                Login
+                            <button className="px-5 py-2 text-white font-semibold rounded-lg hover:bg-red-600 transition">
+                                <LogInIcon/>
                             </button>
                         </Link>
                     )}
                 </div>
 
+                {/* Mobile Toggle Icon */}
                 <div className="md:hidden text-white" onClick={toggleMenu}>
                     {isOpen ? <X size={28} /> : <Menu size={28} />}
                 </div>
             </div>
 
+            {/* Mobile Menu */}
             {isOpen && (
-                <div className="md:hidden bg-blue-600 px-6 pb-4 space-y-2">
+                <div className="md:hidden bg-indigo-700 px-6 pb-6 pt-2 space-y-3 text-white rounded-b-xl">
                     {routes.map((path, i) => (
                         <Link to={path} key={path} onClick={() => setIsOpen(false)}>
-                            <div className={`block py-2 font-semibold text-white ${location.pathname === path ? 'underline' : ''}`}>
+                            <div className={`block py-2 text-lg font-medium ${location.pathname === path ? 'underline' : ''}`}>
                                 {labels[i]}
                             </div>
                         </Link>
@@ -119,26 +121,31 @@ const Navbar = () => {
                         <>
                             {user.role === 'admin' && (
                                 <Link to="/dashboard" onClick={() => setIsOpen(false)}>
-                                    <div className="py-2 font-semibold text-white">Dashboard</div>
+                                    <div className="py-2 font-medium text-white">Dashboard</div>
                                 </Link>
                             )}
                             <Link to="/profile" onClick={() => setIsOpen(false)}>
-                                <div className="py-2 font-semibold text-white">Profile</div>
+                                <div className="py-2 font-medium text-white">Profile</div>
                             </Link>
-                            <div className="py-2 font-semibold text-white flex items-center gap-2">
-                                <User2 size={20} />
-                                <span>{user.name}</span>
+                            <div className="py-2 font-medium text-white flex items-center gap-2">
+                                <span className="text-yellow-300">{user.name}</span>
                             </div>
                         </>
                     )}
 
                     {isLoggedIn ? (
-                        <div onClick={() => { setIsOpen(false); handleLogout(); }} className="py-2 font-semibold text-white cursor-pointer">
+                        <div
+                            onClick={() => {
+                                setIsOpen(false);
+                                handleLogout();
+                            }}
+                            className="py-2 font-medium text-white cursor-pointer"
+                        >
                             Logout
                         </div>
                     ) : (
                         <Link to="/login" onClick={() => setIsOpen(false)}>
-                            <div className="py-2 font-semibold text-white">Login</div>
+                            <div className="py-2 font-medium text-white">Login</div>
                         </Link>
                     )}
                 </div>
