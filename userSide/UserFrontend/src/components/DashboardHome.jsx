@@ -1,8 +1,7 @@
-import React from 'react';
 import { useOutletContext } from 'react-router-dom';
 
 const DashboardHome = () => {
-    const { user, users } = useOutletContext();
+    const { user } = useOutletContext();
 
     return (
         <>

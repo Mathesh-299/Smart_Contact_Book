@@ -11,13 +11,13 @@ const Addcontact = () => {
     useEffect(() => {
         const fetchData = () => {
             const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-            const isAdmin = JSON.parse(localStorage.getItem("user"));
+            const isUser = JSON.parse(localStorage.getItem("user"));
 
             if (isLoggedIn) {
                 // If the user is logged in, and if they are an admin, stay on the dashboard
-                if (isAdmin && isAdmin.role === "user") {
-                    setUser(isAdmin);
-                    console.log(isAdmin.role);
+                if (isUser && isUser.role === "user") {
+                    setUser(isUser);
+                    console.log(isUser.role);
                 } else {
                     localStorage.removeItem("isLoggedIn");
                     localStorage.removeItem("user");
@@ -25,7 +25,6 @@ const Addcontact = () => {
                     navigate("/login");
                 }
             } else {
-                // If not logged in, navigate to login page
                 navigate("/login");
             }
         };

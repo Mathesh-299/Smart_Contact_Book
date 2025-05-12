@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import API from '../api/api';
 
@@ -77,7 +77,7 @@ const VerifyOtp = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-blue-300 px-4">
+        <div className="min-h-[calc(100vh-5rem)] flex items-center justify-center bg-gradient-to-r from-blue-100 to-blue-300 px-4">
             <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">OTP Verification</h2>
                 <p className="text-sm text-gray-600 text-center mb-4">Enter the OTP sent to <span className="font-medium text-blue-600">{email}</span></p>
@@ -117,7 +117,7 @@ const VerifyOtp = () => {
                     <button
                         onClick={handleResendOtp}
                         disabled={loading}
-                        className="text-sm text-blue-600 hover:underline"
+                        className="text-sm text-blue-600 hover:underline font-bold"
                     >
                         {loading ? 'Sending OTP...' : 'Resend OTP'}
                     </button>

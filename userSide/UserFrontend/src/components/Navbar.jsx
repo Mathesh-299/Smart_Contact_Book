@@ -39,16 +39,19 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("user");
-        toast.success("Logged out successfully");
-        fetchUser(); // force update state
-        navigate('/login');
+        setTimeout(() => {
+            toast.success("Logged out successfully");
+            fetchUser(); // force update state
+            navigate('/login');
+        },4500)
+
     };
 
     const routes = ['/', '/about', '/contact'];
     const labels = ['Home', 'About', 'Contact Us'];
 
     return (
-        <nav className="w-full bg-gradient-to-r from-blue-500 to-blue-400 shadow-xl shadow-blue-700">
+        <nav className="w-full bg-gradient-to-r from-blue-500 to-blue-400">
             <div className="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20">
                 <Link to="/" className="flex items-center gap-3">
                     <img src={Image} width="40" alt="Logo" />
