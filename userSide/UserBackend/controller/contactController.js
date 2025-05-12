@@ -18,12 +18,12 @@ exports.addContact = async (req, res) => {
     }
 }
 
-// exports.getContact = async (req, res) => {
-//     try {
-//         const userId = req.params.id;
-//         const contacts = await Contact.find({ userId });
-//         res.status(200).json(contacts);
-//     } catch (error) {
-//         res.status(500).json({ message: "Can not get" });eetv
-//     }
-// }
+exports.getContact = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const contacts = await Contact.find({ userId });
+        res.status(200).json(contacts);
+    } catch (error) {
+        res.status(500).json({ message: "Can not get" });eetv
+    }
+}
