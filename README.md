@@ -128,7 +128,7 @@ Export contacts to PDF/CSV
 
 Responsive mobile view
 
-🙋‍♂️ Author
+# 🙋‍♂️ Author
 ## Mathesh M
 ### 3rd Year B.Tech IT Student
 ### Sri Shakthi Institute of Engineering and Technology, Coimbatore
