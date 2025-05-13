@@ -1,6 +1,6 @@
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -119,7 +119,7 @@ const Registration = () => {
                 setIsLoading(false);
             }, 2000);
         } catch (error) {
-            const errMsg = error.response?.data?.error || 'Registration failed';
+            const errMsg = error.response?.data?.error || 'User name already exist';
             if (error.response?.status >= 400 && error.response?.status < 500) {
                 toast.error(errMsg);
             } else {
@@ -131,7 +131,7 @@ const Registration = () => {
 
     return (
         <div className="min-h-[calc(100vh-5rem)] bg-cover bg-center flex justify-center items-center px-4" style={{ backgroundImage: `url(${Register})`, width:'100vw'}}>
-            <div className="w-full max-w-lg bg-white/35 shadow-2xl rounded-3xl p-8">
+            <div className="w-full max-w-lg bg-white/60 shadow-2xl rounded-3xl p-8">
                 <div className="text-center mb-6">
                     <img src={Image} alt="Logo" className="mx-auto w-12 h-12" />
                     <h1 className="text-3xl font-extrabold text-gray-800 mt-2">Create Your Account</h1>

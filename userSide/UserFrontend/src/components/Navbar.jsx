@@ -10,7 +10,7 @@ const Navbar = () => {
     const [loggingOut, setLoggingOut] = useState(false); // Loading state for logout
     const location = useLocation();
     const navigate = useNavigate();
-
+    const [showMsg, setShowMsg] = useState(false);
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
     const toggleMenu = () => setIsOpen(!isOpen);
@@ -93,8 +93,11 @@ const Navbar = () => {
                         </button>
                     ) : (
                         <Link to="/login">
-                            <button className="px-5 py-2 text-white font-semibold rounded-lg hover:bg-red-600 transition">
-                                <LogInIcon/>
+                            <button onMouseEnter={() => setShowMsg(true)}
+                                onMouseLeave={() => setShowMsg(false)}
+                                className="px-5 py-2 text-white font-semibold rounded-lg hover:bg-red-600 transition">
+                                <LogInIcon />
+                                {showMsg && <p>Login</p>}
                             </button>
                         </Link>
                     )}
