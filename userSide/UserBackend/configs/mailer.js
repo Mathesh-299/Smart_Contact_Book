@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 transporter.verify(function (error, success) {
     if (error) {
-        console.error("Mail transporter config error:", error); // ADD THIS
+        console.error("Mail transporter config error:", error);
     } else {
         console.log("Mail server is ready to send messages",success);
     }

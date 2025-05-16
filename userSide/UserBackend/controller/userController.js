@@ -85,10 +85,6 @@ exports.verifyOtp = async (req, res) => {
     }
 };
 
-
-// Login with OTP check (after user is verified)
-// const jwt = require("jsonwebtoken");
-
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -126,8 +122,6 @@ exports.login = async (req, res) => {
 };
 
 
-
-// Resend OTP if OTP not expired
 exports.resendOtp = async (req, res) => {
     const { email } = req.body;
 
@@ -150,7 +144,6 @@ exports.resendOtp = async (req, res) => {
     }
 };
 
-// Get all users (Admin route)
 exports.all = async (req, res) => {
     try {
         const response = await User.find();

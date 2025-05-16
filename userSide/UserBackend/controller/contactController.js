@@ -4,7 +4,6 @@ const User = require("../models/userSchema")
 exports.addContact = async (req, res) => {
     try {
         const { fullName, email, phoneNumber, location, userId } = req.body;
-        // const userId = req.params.id;
         if (!fullName || !email || !phoneNumber || !location) {
             return res.status(404).json({ message: "Please fill all the fields" });
         }
@@ -46,15 +45,15 @@ exports.editContact = async (req, res) => {
     const contactId = req.params.id;
     try {
         const contactEdit = await Contact.findById(contactId);
-        if(!contactEdit) return res.status(404).json({message:"Not found"});
+        if (!contactEdit) return res.status(404).json({ message: "Not found" });
         contactEdit.fullName = fullName || contactEdit.fullName;
         contactEdit.email = email || contactEdit.email;
         contactEdit.phoneNumber = phoneNumber || contactEdit.phoneNumber;
         contactEdit.location = location || contactEdit.location;
 
         await contactEdit.save();
-        res.status(200).json({message:"Updated Successfully"});
+        res.status(200).json({ message: "Updated Successfully" });
     } catch (error) {
-        res.status(500).json({message:"Can not editable"});
+        res.status(500).json({ message: "Can not editable" });
     }
 }
