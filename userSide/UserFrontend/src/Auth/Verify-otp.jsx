@@ -126,7 +126,7 @@ const VerifyOtp = () => {
                 </div>
             </div>
 
-            <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </div>
     );
 };

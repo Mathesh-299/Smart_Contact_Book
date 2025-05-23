@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FaChartBar, FaUsers } from 'react-icons/fa';
+import { FaChartBar, FaUser, FaUsers } from 'react-icons/fa';
 import Skeleton from 'react-loading-skeleton';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -53,30 +53,36 @@ const Dashboard = () => {
     }, [isLoggedIn, navigate]);
 
     return (
-        <div className="min-h-[calc(100vh-5rem)] bg-gray-100 flex flex-col md:flex-row">
+        <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
             {/* Sidebar */}
-            <div className="w-full md:w-1/4 bg-gradient-to-r from-blue-500 to-blue-400 text-white p-4 md:p-6">
-                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center md:text-left">Admin Dashboard</h2>
-                <div className="mb-4 md:mb-6 text-center md:text-left">
-                    <p className="text-base md:text-lg font-semibold">
+            <div className="w-full md:w-1/4 bg-gradient-to-r from-blue-500 to-blue-400 text-white p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center md:text-left">Admin Dashboard</h2>
+
+                <div className="mb-4 text-center md:text-left">
+                    <p className="text-base sm:text-lg font-semibold">
                         Registered Users: {loading ? <Skeleton width={100} /> : count}
                     </p>
                 </div>
 
-                <div className="space-y-3 md:space-y-4">
+                <div className="space-y-10">
                     <button
                         onClick={() => navigate('/dashboard')}
-                        className="w-full py-2 text-left text-gray-200 hover:bg-gray-600 rounded-md flex items-center gap-2 px-2"
+                        className="w-full py-2 text-left text-gray-200 hover:bg-gray-600 rounded-md flex items-center gap-2 px-4"
                     >
                         <FaChartBar />
                         Dashboard
                     </button>
                     <button
                         onClick={() => navigate('/dashboard/users')}
-                        className="w-full py-2 text-left text-gray-200 hover:bg-gray-600 rounded-md flex items-center gap-2 px-2"
+                        className="w-full py-2 text-left text-gray-200 hover:bg-gray-600 rounded-md flex items-center gap-2 px-3"
                     >
                         <FaUsers />
                         All Users
+                    </button>
+                    <button onClick={()=>{navigate("/dashboard/addNewUser")}}
+                        className='w-full py-2 text-left text-gray-200 hover:bg-gray-600 rounded-md flex items-center gap-2 px-3'>
+                            <FaUser/>
+                        Add new user
                     </button>
                 </div>
 
@@ -87,7 +93,7 @@ const Dashboard = () => {
                             localStorage.removeItem("user");
                             navigate('/login');
                         }}
-                        className="px-6 py-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-700"
+                        className="w-full px-6 py-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-700 transition"
                     >
                         Logout
                     </button>
@@ -95,7 +101,7 @@ const Dashboard = () => {
             </div>
 
             {/* Main Content */}
-            <div className="w-full md:w-3/4 p-4 md:p-6">
+            <div className="w-full md:w-3/4 p-4 sm:p-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                     <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
                         <h3 className="text-lg sm:text-xl font-bold">Total Users</h3>

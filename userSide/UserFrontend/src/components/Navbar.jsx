@@ -158,3 +158,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+// add media queries in responsive website

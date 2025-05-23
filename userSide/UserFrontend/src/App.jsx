@@ -11,6 +11,7 @@ import Profile from "./components/Profile"
 import User from "./components/User"
 import About from "./pages/About"
 import Addcontact from "./pages/Addcontact"
+import AddNewUser from "./pages/AddNewUser"
 import ContactUs from "./pages/ContactUs"
 import Form from "./pages/Form"
 import Home from "./pages/Home"
@@ -36,6 +37,7 @@ export default function App() {
                         <Route path="/dashboard" element={<Dashboard />}>
                             <Route index element={<DashboardHome />} /> {/* default content */}
                             <Route path="users" element={<User />} />
+                            <Route path="addNewUser" element={<AddNewUser />} />
                         </Route>
 
                     </Routes>
