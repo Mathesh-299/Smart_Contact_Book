@@ -236,25 +236,30 @@ exports.editUser = async (req, res) => {
     }
 };
 
-// Delete user (Admin route)
 exports.deleteUser = async (req, res) => {
-    const {email} = req.body;
-
-    const  userId  = req.params.id;
-    // console.log(userId);
     try {
-        const user = await User.findByIdAndDelete(userId);
-        const admin =await User.findOne(email);
-        if(admin){
-            return res.status(404).json({message:"Admin can't delete"});
-        }
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
+        const { email } = req.body;
+        const userId = req.params.id;
 
-        res.status(200).json({ message: 'User deleted successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error deleting user', error: error.message });
+        // Prevent admin from deleting themselves
+        if (email === "matheshm2909@gmail.com") {
+            return res.status(403).json({ message: "Admin can't delete themselves" });
+        }
+        const adminUser = await User.findOne({ email }); // ✅ this is correct
+        if (!adminUser) return res.status(401).json({ message: "Unauthorized" });
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        await User.findByIdAndDelete(userId);
+
+        res.status(200).json({ message: 'User deleted successfully', user });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error deleting user', error: err.message });
     }
 };
+
+
+
+
