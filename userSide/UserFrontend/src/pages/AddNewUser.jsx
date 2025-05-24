@@ -43,7 +43,7 @@ const AddNewUser = () => {
             const res = await API.post("/user/register", formData);
 
             if (res.status === 200) {
-                toast.success("User added successfully!");
+                toast.warn("Check user email!");
                 setFormData({ username: "", email: "", phoneNumber: "", password: "" });
                 setTimeout(() => {
                     nav("/verify-otp", { state: { email: formData.email } });

@@ -13,23 +13,41 @@ const User = () => {
         phoneNumber: ''
     });
     const [isEditing, setIsEditing] = useState(false);
+    console.log(users);
 
-    const handleDelete = async (userId) => {
+
+    const handleDelete = async (id, userEmail) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+        if (!confirmDelete) return;
+
         try {
-            const res = await API.delete(`/user/delete/${userId}`, formData, {
+            const adminEmail = localStorage.getItem("email"); // ✅ Get the admin's email
+            console.log(adminEmail)
+            const res = await API.delete(`/user/delete/${id}`, {
+                data: { email: userEmail }, // ✅ Send admin's email for validation
                 headers: { Authorization: `Bearer ${token}` }
             });
-            toast.success("User deleted successfully");
-            const updatedUsers = users.filter(user => user._id !== userId);
-            setUsers(updatedUsers);
-        } catch (err) {
-            if (err.response?.status === 403) {
-                toast.error("Admin can't delete");
-            } else {
-                toast.error("Error deleting user");
-            }
+
+            toast.success("User successfully deleted");
+
+            setTimeout(() => {
+                window.location.reload(); // ✅ Refresh the page
+            }, 1500);
+
+        } catch (e) {
+            console.log(e.response?.data || e.message);
+            toast.error(
+                e.response?.data?.message === "Admin can't delete themselves"
+                    ? "Admin cannot delete their own account"
+                    : "Something went wrong during deletion"
+            );
         }
     };
+
+
+
+
+
 
     const handleEdit = (username, userId) => {
         const selectedUser = users.find(user => user._id === userId);
@@ -82,6 +100,7 @@ const User = () => {
                             <td className="px-4 py-2">{user.username}</td>
                             <td className="px-4 py-2">{user.email}</td>
                             <td className="px-4 py-2">{user.phoneNumber}</td>
+                            {/* <td>{user.role}</td> */}
                             <td className="px-4 py-2">
                                 <div className="flex flex-wrap gap-2">
                                     <button
@@ -92,7 +111,7 @@ const User = () => {
                                     </button>
                                     <button
                                         className="bg-red-500 text-white px-3 py-1 rounded-md"
-                                        onClick={() => handleDelete(user._id)}
+                                        onClick={() => handleDelete(user._id, user.email)}
                                     >
                                         Delete
                                     </button>

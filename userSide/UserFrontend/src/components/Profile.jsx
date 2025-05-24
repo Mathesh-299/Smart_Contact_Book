@@ -69,7 +69,6 @@ const Profile = () => {
             await API.put('/user/update', formData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-
             localStorage.setItem('user', JSON.stringify(formData));
             setUser(formData);
             setIsEditing(false);
