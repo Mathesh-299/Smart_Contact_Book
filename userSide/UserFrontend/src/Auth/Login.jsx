@@ -160,7 +160,7 @@ const Login = () => {
                     >
                         {loading ? "Logging in..." : (
                             <>
-                                <img src={Arrow} width="20" alt="arrow" className="animate-bounce" />
+                                <img src={Arrow} width="20" alt="arrow" className="animate-pulse" />
                                 Login
                             </>
                         )}

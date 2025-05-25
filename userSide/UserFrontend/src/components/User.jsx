@@ -17,6 +17,10 @@ const User = () => {
 
 
     const handleDelete = async (id, userEmail) => {
+        if(userEmail==="matheshm2909@gmail.com"){
+            toast.warning("Admin Can't delete themselves");
+            return;
+        }
         const confirmDelete = window.confirm("Are you sure you want to delete this user?");
         if (!confirmDelete) return;
 
@@ -24,14 +28,14 @@ const User = () => {
             const adminEmail = localStorage.getItem("email"); // ✅ Get the admin's email
             console.log(adminEmail)
             const res = await API.delete(`/user/delete/${id}`, {
-                data: { email: userEmail }, // ✅ Send admin's email for validation
+                data: { email: userEmail }, 
                 headers: { Authorization: `Bearer ${token}` }
             });
 
             toast.success("User successfully deleted");
 
             setTimeout(() => {
-                window.location.reload(); // ✅ Refresh the page
+                window.location.reload();
             }, 1500);
 
         } catch (e) {
