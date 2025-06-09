@@ -118,8 +118,6 @@ Use the search input to filter contacts by name or email
 
 ## 📌 Future Enhancements
 
-Authentication (Login/Signup)
-
 Profile picture uploads
 
 Contact grouping and tags
