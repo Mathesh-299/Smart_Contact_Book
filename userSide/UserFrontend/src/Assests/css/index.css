@@ -1,23 +1,2 @@
-/* @tailwind base; */
-/* @tailwind components; */
-@tailwind utilities;
+
 @import "tailwindcss";
-
-
-* {
-    margin: 0px;
-    padding: 0px;
-    /* position: sticky; */
-}
-
-
-.app-wrapper {
-    min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4);
-    /* optional overlay */
-}
-
-body.dark {
-    background-color: #1e1e2f;
-    color: white;
-}

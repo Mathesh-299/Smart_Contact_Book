@@ -32,14 +32,11 @@ export default function App() {
                         <Route path="/form" element={<Form />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/verify-otp" element={<VerifyOtp />} />
-                        {/* <Route path="/example" element={<Example/>}/> */}
-                        {/* Dashboard route with nested user route */}
                         <Route path="/dashboard" element={<Dashboard />}>
                             <Route index element={<DashboardHome />} /> {/* default content */}
                             <Route path="users" element={<User />} />
                             <Route path="addNewUser" element={<AddNewUser />} />
                         </Route>
-
                     </Routes>
                 </div>
             </Router>

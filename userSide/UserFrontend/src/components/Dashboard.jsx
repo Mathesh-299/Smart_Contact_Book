@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FaChartBar, FaUser, FaUsers } from 'react-icons/fa';
 import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import API from '../api/api';
@@ -12,109 +13,107 @@ const Dashboard = () => {
     const [count, setCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                toast.error("No token");
-                navigate("/login");
+            const token = localStorage.getItem('token');
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+
+            if (!token || !isLoggedIn || !storedUser || storedUser.role !== 'admin') {
+                toast.error('Unauthorized access');
+                navigate('/login');
                 return;
             }
-            const storedUser = JSON.parse(localStorage.getItem("user"));
-            if (!isLoggedIn || !storedUser || storedUser.role !== 'admin') {
-                navigate('/login');
-            } else {
-                setUser(storedUser);
-            }
+
+            setUser(storedUser);
+            setLoading(true);
 
             try {
-                setLoading(true);
-                const userStored = await API.get('/user/all', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setUsers(userStored.data);
+                const [userRes, countRes] = await Promise.all([
+                    API.get('/user/all', { headers: { Authorization: `Bearer ${token}` } }),
+                    API.get('/user/count', { headers: { Authorization: `Bearer ${token}` } }),
+                ]);
 
-                const response = await API.get('/user/count', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setCount(response.data.count);
-                setLoading(false);
-            } catch (error) {
-                setError("Error fetching user data...");
-                toast.error("Error fetching user data...");
-                setCount(0);
+                setUsers(userRes.data);
+                setCount(countRes.data.count);
+            } catch (err) {
+                console.error(err);
+                toast.error('Error fetching user data');
+                setError('Unable to load user data');
                 setUsers([]);
+                setCount(0);
+            } finally {
                 setLoading(false);
             }
         };
+
         fetchData();
     }, [isLoggedIn, navigate]);
 
-    return (
-        <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
-            {/* Sidebar */}
-            <div className="w-full md:w-1/4 bg-gradient-to-r from-blue-500 to-blue-400 text-white p-4 sm:p-6">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center md:text-left">Admin Dashboard</h2>
+    const handleLogout = () => {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('user');
+        navigate('/login');
+    };
 
-                <div className="mb-4 text-center md:text-left">
-                    <p className="text-base sm:text-lg font-semibold">
-                        Registered Users: {loading ? <Skeleton width={100} /> : count}
+    const SidebarButton = ({ icon, text, path }) => (
+        <button
+            onClick={() => navigate(path)}
+            className="w-full flex items-center gap-3 px-4 py-2 rounded-md text-gray-200 hover:bg-gray-600 transition"
+        >
+            {icon}
+            <span>{text}</span>
+        </button>
+    );
+
+    return (
+        <div className="min-h-screen flex flex-col md:flex-row bg-gray-100 font-sans">
+            {/* Sidebar */}
+            <aside className="w-full md:w-1/4 bg-gradient-to-b from-blue-500 to-blue-400 text-white p-6 space-y-6 shadow-lg">
+                <div>
+                    <h2 className="text-2xl font-bold text-center md:text-left mb-4">Admin Dashboard</h2>
+                    <p className="font-medium text-center md:text-left">
+                        Registered Users: {loading ? <Skeleton width={80} /> : count}
                     </p>
                 </div>
 
-                <div className="space-y-10">
-                    <button
-                        onClick={() => navigate('/dashboard')}
-                        className="w-full py-2 text-left text-gray-200 hover:bg-gray-600 rounded-md flex items-center gap-2 px-4"
-                    >
-                        <FaChartBar />
-                        Dashboard
-                    </button>
-                    <button
-                        onClick={() => navigate('/dashboard/users')}
-                        className="w-full py-2 text-left text-gray-200 hover:bg-gray-600 rounded-md flex items-center gap-2 px-3"
-                    >
-                        <FaUsers />
-                        All Users
-                    </button>
-                    <button onClick={()=>{navigate("/dashboard/addNewUser")}}
-                        className='w-full py-2 text-left text-gray-200 hover:bg-gray-600 rounded-md flex items-center gap-2 px-3'>
-                            <FaUser/>
-                        Add new user
-                    </button>
-                </div>
+                <nav className="space-y-4">
+                    <SidebarButton icon={<FaChartBar />} text="Dashboard" path="/dashboard" />
+                    <SidebarButton icon={<FaUsers />} text="All Users" path="/dashboard/users" />
+                    <SidebarButton icon={<FaUser />} text="Add New User" path="/dashboard/addNewUser" />
+                </nav>
 
-                <div className="mt-6 text-center">
+                <div className="pt-4">
                     <button
-                        onClick={() => {
-                            localStorage.removeItem("isLoggedIn");
-                            localStorage.removeItem("user");
-                            navigate('/login');
-                        }}
-                        className="w-full px-6 py-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-700 transition"
+                        onClick={handleLogout}
+                        className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-md transition"
                     >
                         Logout
                     </button>
                 </div>
-            </div>
+            </aside>
 
             {/* Main Content */}
-            <div className="w-full md:w-3/4 p-4 sm:p-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-                    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-                        <h3 className="text-lg sm:text-xl font-bold">Total Users</h3>
-                        <p className="text-2xl sm:text-3xl font-semibold">
-                            {loading ? <Skeleton width={100} /> : count}
+            <main className="w-full md:w-3/4 p-6 space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-all duration-300">
+                        <h3 className="text-xl font-semibold text-gray-700 mb-2">Total Users</h3>
+                        <p className="text-3xl font-bold text-purple-600">
+                            {loading ? <Skeleton width={80} /> : count}
                         </p>
                     </div>
                 </div>
 
-                {error && <div className="text-red-600 mb-4">{error}</div>}
+                {error && (
+                    <div className="bg-red-100 text-red-700 p-3 rounded-md border border-red-300">
+                        {error}
+                    </div>
+                )}
 
+                {/* Render child routes */}
                 <Outlet context={{ user, users, setUsers }} />
-            </div>
+            </main>
         </div>
     );
 };

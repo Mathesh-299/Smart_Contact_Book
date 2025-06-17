@@ -186,7 +186,6 @@ const Form = () => {
                 )}
             </section>
 
-            {/* Modal */}
             {isOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50">
                     <form

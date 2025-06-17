@@ -98,7 +98,6 @@ const Profile = () => {
             <div className="absolute inset-0 bg-black bg-opacity-60 z-0" />
             <div className="relative z-10 bg-white/90 rounded-3xl shadow-2xl backdrop-blur-lg max-w-5xl w-full flex flex-col md:flex-row overflow-hidden">
 
-                {/* Close Icon */}
                 <button
                     onClick={() => navigate('/')}
                     className="absolute top-4 right-4 text-gray-600 hover:text-red-600 text-2xl z-20 transition-all"
@@ -107,7 +106,6 @@ const Profile = () => {
                     <FaTimes />
                 </button>
 
-                {/* Sidebar */}
                 <div className="md:w-1/3 bg-gradient-to-br from-indigo-700 to-indigo-900 text-white p-8 flex flex-col items-center justify-center text-center">
                     <div className="w-28 h-28 rounded-full bg-white text-indigo-800 flex items-center justify-center text-4xl font-bold mb-4 shadow-xl">
                         {getInitials(user.username)}
@@ -123,7 +121,6 @@ const Profile = () => {
                     </button>
                 </div>
 
-                {/* Main Content */}
                 <div className="md:w-2/3 p-8 bg-white text-gray-800">
                     <h3 className="text-3xl font-bold mb-6 border-b pb-3">Profile Information</h3>
                     <div className="space-y-4">

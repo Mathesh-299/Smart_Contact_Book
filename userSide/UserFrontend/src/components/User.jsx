@@ -17,7 +17,7 @@ const User = () => {
 
 
     const handleDelete = async (id, userEmail) => {
-        if(userEmail==="matheshm2909@gmail.com"){
+        if (userEmail === "matheshm2909@gmail.com") {
             toast.warning("Admin Can't delete themselves");
             return;
         }
@@ -25,10 +25,10 @@ const User = () => {
         if (!confirmDelete) return;
 
         try {
-            const adminEmail = localStorage.getItem("email"); // ✅ Get the admin's email
+            const adminEmail = localStorage.getItem("email");
             console.log(adminEmail)
             const res = await API.delete(`/user/delete/${id}`, {
-                data: { email: userEmail }, 
+                data: { email: userEmail },
                 headers: { Authorization: `Bearer ${token}` }
             });
 

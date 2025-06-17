@@ -61,7 +61,6 @@ const AddNewUser = () => {
             </div>
 
             <div className="bg-blue-200 shadow-2xl w-[90%] sm:w-[400px] mt-7 rounded-xl p-6 relative transition-all duration-300 ease-in-out">
-                {/* Close Button */}
                 <button
                     onClick={() => nav("/dashboard")}
                     className="absolute top-4 right-4 text-gray-600 hover:text-red-500 transition"
@@ -71,7 +70,7 @@ const AddNewUser = () => {
                 </button>
 
                 <form className="space-y-5 mt-4" onSubmit={handleSubmit}>
-                    {/* Username */}
+                    
                     <div className="flex flex-col mb-2">
                         <label className="font-semibold text-gray-700 mb-2">Username</label>
                         <input
@@ -84,7 +83,6 @@ const AddNewUser = () => {
                         />
                     </div>
 
-                    {/* Email */}
                     <div className="flex flex-col mb-2">
                         <label className="font-semibold text-gray-700 mb-2">Email</label>
                         <input
@@ -97,7 +95,6 @@ const AddNewUser = () => {
                         />
                     </div>
 
-                    {/* Phone Number */}
                     <div className="flex flex-col mb-2">
                         <label className="font-semibold text-gray-700 mb-2">Phone Number</label>
                         <input
@@ -110,7 +107,6 @@ const AddNewUser = () => {
                         />
                     </div>
 
-                    {/* Password */}
                     <div className="flex flex-col relative mb-2">
                         <label className="font-semibold text-gray-700 mb-2">Password</label>
                         <input
@@ -130,7 +126,6 @@ const AddNewUser = () => {
                         </span>
                     </div>
 
-                    {/* Submit Button */}
                     <button
                         type="submit"
                         className="bg-blue-200 hover:bg-blue-600 text-blue-600 hover:text-white w-30 py-2.5 rounded-md font-bold hover:font-bold transition-all mt-2"

@@ -48,13 +48,11 @@ const Navbar = () => {
     return (
         <nav className="w-full bg-gradient-to-r from-blue-600 via-indigo-700 to-purple-700 shadow-md sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20">
-                {/* Logo */}
+               
                 <Link to="/" className="flex items-center gap-3">
                     <img src={Image} width="40" alt="Logo" />
                     <h1 className="text-white text-2xl sm:text-3xl font-bold font-mono tracking-wide">Smart Contact Book</h1>
                 </Link>
-
-                {/* Desktop Links */}
                 <div className="hidden md:flex gap-6 items-center">
                     {routes.map((path, i) => (
                         <Link to={path} key={path}>
@@ -109,7 +107,6 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
             {isOpen && (
                 <div className="md:hidden bg-indigo-700 px-6 pb-6 pt-2 space-y-3 text-white rounded-b-xl">
                     {routes.map((path, i) => (
@@ -158,4 +155,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-// add media queries in responsive website
