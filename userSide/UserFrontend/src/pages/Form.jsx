@@ -209,9 +209,9 @@ const Form = () => {
                                     <span>{iconMap[field]}</span>
                                     <input
                                         type={field === "email" ? "email" : field === "phoneNumber" ? "tel" : "text"}
-                                        id={field}
-                                        name={field}
-                                        value={formData[field]}
+                                        // id={field}/
+                                        // name={field}
+                                        // value={formData[field]}
                                         onChange={handleInputChange}
                                         placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
                                         className="w-full focus:outline-none bg-transparent"

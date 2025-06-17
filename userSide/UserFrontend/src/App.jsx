@@ -13,6 +13,7 @@ import About from "./pages/About"
 import Addcontact from "./pages/Addcontact"
 import AddNewUser from "./pages/AddNewUser"
 import ContactUs from "./pages/ContactUs"
+import Example from "./pages/Example"
 import Form from "./pages/Form"
 import Home from "./pages/Home"
 
@@ -32,7 +33,7 @@ export default function App() {
                         <Route path="/form" element={<Form />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/verify-otp" element={<VerifyOtp />} />
-
+                        <Route path="/example" element={<Example/>}/>
                         {/* Dashboard route with nested user route */}
                         <Route path="/dashboard" element={<Dashboard />}>
                             <Route index element={<DashboardHome />} /> {/* default content */}
