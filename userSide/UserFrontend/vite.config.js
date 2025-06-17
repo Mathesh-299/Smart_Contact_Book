@@ -1,9 +1,13 @@
-import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(),
-  ],
+  plugins: [react()],
+  server: {
+    historyApiFallback: true // Fixes local dev refresh issue
+  },
+  build: {
+    outDir: 'dist' // Ensure correct Vercel output
+  }
 })
