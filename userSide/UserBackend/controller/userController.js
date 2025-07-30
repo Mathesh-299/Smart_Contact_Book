@@ -21,8 +21,6 @@ exports.register = async (req, res) => {
 
         const otp = Math.floor(100000 + Math.random() * 900000);
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Store OTP and temporary user info
         otps[email] = { otp, timestamp: Date.now() };
         tempUsers[email] = { username, email, phoneNumber, password: hashedPassword };
 
@@ -44,7 +42,6 @@ exports.register = async (req, res) => {
 };
 
 
-// Verify OTP for registration
 exports.verifyOtp = async (req, res) => {
     const { email, otp } = req.body;
 
@@ -67,7 +64,6 @@ exports.verifyOtp = async (req, res) => {
     }
 
     try {
-        // Save user now
         const user = new User({
             ...tempUser,
             isVerified: true
@@ -75,7 +71,6 @@ exports.verifyOtp = async (req, res) => {
 
         await user.save();
 
-        // Clean up temporary storage
         delete otps[email];
         delete tempUsers[email];
 
@@ -167,12 +162,10 @@ exports.getProfile = async (req, res) => {
     }
 };
 
-// Edit profile with JWT authentication
 exports.editProfile = async (req, res) => {
     const { username, email, phoneNumber, gender, dob, address } = req.body;
-    const userId = req.user.id;  // Use the user ID from the decoded token
+    const userId = req.user.id;
 
-    // Validate input fields
     if (!username || !email || !phoneNumber) {
         return res.status(400).json({ message: "All fields are required" });
     }
@@ -275,10 +268,22 @@ exports.findUser = async (req, res) => {
 }
 
 exports.forgotPassword = async (req, res) => {
-    const { username, newPassword } = req.body;
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+        return res.status(400).json({ status: "Failed", message: "Please Fill the Details" });
+    }
     try {
+        const user = await User.findOne({ email });
+        if (!email) {
+            return res.status(400).json({ status: "Failed", message: "User Not Found" });
+        }
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const updateUser = User({ password: hashedPassword });
 
+        await updateUser.save();
+        res.status(200).json({ status: "Success", message: "Password Updated" })
     } catch (error) {
-
+        res.status(501).json({ status: "Error", message: "Internal Server Error" });
     }
 }
