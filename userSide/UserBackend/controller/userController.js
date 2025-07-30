@@ -275,13 +275,12 @@ exports.forgotPassword = async (req, res) => {
     }
     try {
         const user = await User.findOne({ email });
-        if (!email) {
+        if (!user) {
             return res.status(400).json({ status: "Failed", message: "User Not Found" });
         }
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        const updateUser = User({ password: hashedPassword });
-
-        await updateUser.save();
+        user.password=hashedPassword
+        await user.save();
         res.status(200).json({ status: "Success", message: "Password Updated" })
     } catch (error) {
         res.status(501).json({ status: "Error", message: "Internal Server Error" });
