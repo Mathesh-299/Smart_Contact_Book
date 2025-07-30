@@ -13,7 +13,7 @@ import Arrow from '../Assests/images/right-arrow.png';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+    const handleClickShowPassword = () => setShowPassword(prev => !prev);
     const navigate = useNavigate();
 
     const [emailValue, setEmailValue] = useState('');
@@ -33,6 +33,11 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!emailValue || !passwordValue) {
+            toast.error("Please fill the field first!!!");
+            return;
+        }
 
         try {
             setLoading(true);
@@ -54,12 +59,7 @@ const Login = () => {
             setPasswordValid(false);
 
             setTimeout(() => {
-                // Optional: role-based redirection
-                if (user.role === 'admin') {
-                    navigate('/dashboard');
-                } else {
-                    navigate('/');
-                }
+                user.role === 'admin' ? navigate('/dashboard') : navigate('/');
             }, 1500);
         } catch (err) {
             const errorMessage = err.response?.data?.message || "Invalid email or password";
@@ -68,6 +68,7 @@ const Login = () => {
             setLoading(false);
         }
     };
+
 
     const handleEmailChange = (e) => {
         const value = e.target.value;
@@ -95,18 +96,17 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-5rem)] bg-cover bg-center flex justify-center items-center px-4" style={{ backgroundImage: `url(${LoginPic})`, width: '100vw' }}>
-            <div className="w-full max-w-md bg-white/35 p-8 rounded-2xl shadow-2xl transition-transform hover:scale-[1.02] pt-3">
+        <div className="min-h-screen bg-cover bg-center flex justify-center items-center px-4" style={{ backgroundImage: `url(${LoginPic})` }}>
+            <div className="w-full max-w-md bg-white/10 backdrop-blur-xs p-8 rounded-2xl shadow-2xl transition-transform hover:scale-[1.02]">
                 <div className="flex items-center gap-3 mb-6">
                     <img src={Image} width="45" height="45" alt="Logo" />
                     <h1 className="text-3xl sm:text-4xl font-bold text-purple-600">Login</h1>
                 </div>
 
-                <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
-                    {/* Email */}
-                    <div className='mb-5'>
-                        <label className="block text-xl font-medium text-black mb-1">Email</label>
-                        <div className="flex items-center bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-purple-500">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                        <label className="block text-base font-medium text-black mb-1">Email</label>
+                        <div className="flex items-center bg-gray-50 border border-gray-300 rounded-lg px-3 py-2">
                             <img src={Email} alt="email" width="20" height="20" className="mr-2 opacity-70" />
                             <input
                                 type="email"
@@ -118,14 +118,15 @@ const Login = () => {
                             />
                         </div>
                         {!emailValid && emailValue && (
-                            <p className="text-red-500 text-xs mt-1 pl-1 animate-pulse">Please enter a valid email address.</p>
+                            <p className="text-red-500 text-xs mt-1 pl-1 animate-pulse">
+                                Please enter a valid email address.
+                            </p>
                         )}
                     </div>
 
-                    {/* Password */}
-                    <div className='mb-5'>
-                        <label className="block text-xl font-medium text-black mb-1">Password</label>
-                        <div className="relative flex items-center bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-purple-500">
+                    <div>
+                        <label className="block text-base font-medium text-black mb-1">Password</label>
+                        <div className="relative flex items-center bg-gray-50 border border-gray-300 rounded-lg px-3 py-2">
                             <img src={Password} alt="password" width="20" height="20" className="mr-2 opacity-70" />
                             <input
                                 type={showPassword ? 'text' : 'password'}
@@ -153,22 +154,28 @@ const Login = () => {
                         type="submit"
                         disabled={loading || !emailValid || !passwordValid}
                         className={`w-full py-2.5 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 pt-2 pb-3 mb-5
-                            ${loading
+		${loading
                                 ? 'bg-gray-400 cursor-not-allowed text-white'
                                 : 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 hover:shadow-lg'
                             }`}
                     >
-                        {loading ? "Logging in..." : (
+                        {loading ? (
+                            <>
+                                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                Logging in...
+                            </>
+                        ) : (
                             <>
                                 <img src={Arrow} width="20" alt="arrow" className="animate-pulse" />
                                 Login
                             </>
                         )}
                     </button>
+                    <div className="flex justify-end text-sm">
+                        <Link to='/forgot-password' className="text-blue-700 font-semibold hover:underline">Forgot Password?</Link>
+                    </div>
                 </form>
-
-                {/* Footer */}
-                <div className="text-center text-sm font-bold w-full h-10 bg-white px-5 py-3 rounded-full">
+                <div className="text-center mt-6 text-sm">
                     <span className="text-black">Don’t have an account?</span>
                     <Link to="/register" className="text-blue-700 font-semibold ml-1 hover:underline">Sign Up</Link>
                 </div>

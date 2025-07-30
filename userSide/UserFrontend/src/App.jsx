@@ -13,6 +13,7 @@ import About from "./pages/About"
 import Addcontact from "./pages/Addcontact"
 import AddNewUser from "./pages/AddNewUser"
 import ContactUs from "./pages/ContactUs"
+import Forgot_Password from "./pages/Forgot_password"
 import Form from "./pages/Form"
 import Home from "./pages/Home"
 
@@ -32,8 +33,9 @@ export default function App() {
                         <Route path="/form" element={<Form />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/verify-otp" element={<VerifyOtp />} />
+                        <Route path="/forgot-password" element={<Forgot_Password />} />
                         <Route path="/dashboard" element={<Dashboard />}>
-                            <Route index element={<DashboardHome />} /> {/* default content */}
+                            <Route index element={<DashboardHome />} />
                             <Route path="users" element={<User />} />
                             <Route path="addNewUser" element={<AddNewUser />} />
                         </Route>
