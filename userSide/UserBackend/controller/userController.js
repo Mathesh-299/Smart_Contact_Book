@@ -38,7 +38,7 @@ exports.register = async (req, res) => {
         res.status(200).json({ message: 'OTP sent to your email. Please verify to complete registration!' });
 
     } catch (error) {
-        console.error("Registration Error:", error); // ADD THIS LINE
+        console.error("Registration Error:", error);
         res.status(500).json({ message: 'Registration failed', error: error.message });
     }
 };
@@ -55,7 +55,7 @@ exports.verifyOtp = async (req, res) => {
         return res.status(400).json({ message: "OTP expired or no registration request found." });
     }
 
-    const isExpired = Date.now() - storedOtp.timestamp > 10 * 60 * 1000; // 10 mins
+    const isExpired = Date.now() - storedOtp.timestamp > 10 * 60 * 1000;
     if (isExpired) {
         delete otps[email];
         delete tempUsers[email];
@@ -261,5 +261,24 @@ exports.deleteUser = async (req, res) => {
 };
 
 
+exports.findUser = async (req, res) => {
+    const { email } = req.body;
+    try {
+        const validUser = await User.findOne({ email });
+        if (!validUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ validUser, message: "User found" });
+    } catch (error) {
+        res.status(505).json({ message: "Internal Server Error" })
+    }
+}
 
+exports.forgotPassword = async (req, res) => {
+    const { username, newPassword } = req.body;
+    try {
 
+    } catch (error) {
+
+    }
+}
