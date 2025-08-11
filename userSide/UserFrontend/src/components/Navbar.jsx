@@ -32,14 +32,14 @@ const Navbar = () => {
     }, [location]);
 
     const handleLogout = () => {
-        setLoggingOut(true); // Set the logging out state
+        setLoggingOut(true);
         setTimeout(() => {
             localStorage.removeItem("isLoggedIn");
             localStorage.removeItem("user");
             toast.success("Logged out successfully");
             fetchUser();
             navigate('/login');
-        }, 3000); // Wait 3 seconds before executing logout
+        }, 3000);
     };
 
     const routes = ['/', '/about', '/contact'];
@@ -48,7 +48,7 @@ const Navbar = () => {
     return (
         <nav className="w-full bg-gradient-to-r from-blue-600 via-indigo-700 to-purple-700 shadow-md sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-6 sm:px-12 flex justify-between items-center h-20">
-               
+
                 <Link to="/" className="flex items-center gap-3">
                     <img src={Image} width="40" alt="Logo" />
                     <h1 className="text-white text-2xl sm:text-3xl font-bold font-mono tracking-wide">Smart Contact Book</h1>
@@ -90,18 +90,18 @@ const Navbar = () => {
                             {loggingOut ? 'Logging out...' : 'Logout'}
                         </button>
                     ) : (
-                        <Link to="/login">
-                            <button onMouseEnter={() => setShowMsg(true)}
-                                onMouseLeave={() => setShowMsg(false)}
-                                className="px-5 py-2 text-white font-semibold rounded-lg hover:bg-red-600 transition">
-                                <LogInIcon />
-                                {showMsg && <p>Login</p>}
-                            </button>
-                        </Link>
+                        <div className='flex flex-col justify-between items-center'>
+                            <Link to="/login" >
+                                <button onMouseEnter={() => setShowMsg(true)}
+                                    onMouseLeave={() => setShowMsg(false)}
+                                    className="px-5 py-2 text-white font-semibold rounded-lg hover:bg-red-600 transition flex flex-col justify-between items-center">
+                                    <LogInIcon />
+                                    {showMsg && <p>Login</p>}
+                                </button>
+                            </Link>
+                        </div>
                     )}
                 </div>
-
-                {/* Mobile Toggle Icon */}
                 <div className="md:hidden text-white" onClick={toggleMenu}>
                     {isOpen ? <X size={28} /> : <Menu size={28} />}
                 </div>
@@ -127,9 +127,6 @@ const Navbar = () => {
                             <Link to="/profile" onClick={() => setIsOpen(false)}>
                                 <div className="py-2 font-medium text-white">Profile</div>
                             </Link>
-                            <div className="py-2 font-medium text-white flex items-center gap-2">
-                                <span className="text-yellow-300">{user.name}</span>
-                            </div>
                         </>
                     )}
 

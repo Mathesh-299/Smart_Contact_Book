@@ -21,6 +21,7 @@ export default function App() {
     return (
         <>
             <Router>
+                <ToastContainer />
                 <div className="app-wrapper">
                     <Navbar />
                     <Routes>
