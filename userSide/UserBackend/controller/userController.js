@@ -2,11 +2,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userSchema");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
-// Mail transporter for sending OTPs
 const transporter = require("../configs/mailer");
 const { authenticateJWT } = require("../middleware/userMiddleware");
 
-// Register new user
 const tempUsers = {};
 const otps = {};
 
@@ -25,9 +23,9 @@ exports.register = async (req, res) => {
         tempUsers[email] = { username, email, phoneNumber, password: hashedPassword };
 
         const mailOptions = {
-            from: process.env.EMAIL_USER, // Your email address (should be set in your .env file)
+            from: process.env.EMAIL_USER,
             to: email,
-            subject: 'OTP Verification',
+            subject: '<h1> OTP Verification</h1>',
             text: `Your OTP is: ${otp}`,
         };
 
@@ -89,10 +87,6 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
-        let role = "user";
-        if (email === "matheshm2909@gmail.com" && password === "Admin@123") {
-            role = "admin";
-        }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid email or password" });
@@ -101,6 +95,7 @@ exports.login = async (req, res) => {
         if (!user.isVerified) {
             return res.status(403).json({ message: "Please verify your email via OTP" });
         }
+        let role = (email === "matheshm2909@gmail.com") ? "admin" : "user";
 
         const token = jwt.sign({ id: user._id, role }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
@@ -152,7 +147,7 @@ exports.all = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id); // Get user details from the decoded JWT token
+        const user = await User.findById(req.user.id);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -171,19 +166,15 @@ exports.editProfile = async (req, res) => {
     }
 
     try {
-        // Find and update the user in the database
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             { username, email, phoneNumber, gender, dob, address },
-            { new: true }  // Return the updated user
+            { new: true }
         );
 
-        // If the user was not found
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
-
-        // Send a success response
         res.json({ message: 'Profile updated successfully', updatedUser });
     } catch (error) {
         console.error(error);
@@ -202,7 +193,6 @@ exports.userCountValue = async (req, res) => {
 };
 
 
-// Edit user (Admin route)
 exports.editUser = async (req, res) => {
     const { username, email, phoneNumber, role } = req.body;
     const userId = req.params.id;
@@ -214,7 +204,6 @@ exports.editUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Update user details
         user.username = username || user.username;
         user.email = email || user.email;
         user.phoneNumber = phoneNumber || user.phoneNumber;
@@ -234,11 +223,10 @@ exports.deleteUser = async (req, res) => {
         const { email } = req.body;
         const userId = req.params.id;
 
-        // Prevent admin from deleting themselves
         if (email === "matheshm2909@gmail.com") {
             return res.status(403).json({ message: "Admin can't delete themselves" });
         }
-        const adminUser = await User.findOne({ email }); // ✅ this is correct
+        const adminUser = await User.findOne({ email });
         if (!adminUser) return res.status(401).json({ message: "Unauthorized" });
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: "User not found" });
@@ -279,7 +267,7 @@ exports.forgotPassword = async (req, res) => {
             return res.status(400).json({ status: "Failed", message: "User Not Found" });
         }
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        user.password=hashedPassword
+        user.password = hashedPassword
         await user.save();
         res.status(200).json({ status: "Success", message: "Password Updated" })
     } catch (error) {
