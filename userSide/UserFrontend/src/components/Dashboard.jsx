@@ -69,7 +69,6 @@ const Dashboard = () => {
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row bg-gray-100 font-sans">
-            {/* Sidebar */}
             <aside className="w-full md:w-1/4 bg-gradient-to-b from-blue-500 to-blue-400 text-white p-6 space-y-6 shadow-lg">
                 <div>
                     <h2 className="text-2xl font-bold text-center md:text-left mb-4">Admin Dashboard</h2>
@@ -93,8 +92,6 @@ const Dashboard = () => {
                     </button>
                 </div>
             </aside>
-
-            {/* Main Content */}
             <main className="w-full md:w-3/4 p-6 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-all duration-300">
@@ -110,8 +107,6 @@ const Dashboard = () => {
                         {error}
                     </div>
                 )}
-
-                {/* Render child routes */}
                 <Outlet context={{ user, users, setUsers }} />
             </main>
         </div>

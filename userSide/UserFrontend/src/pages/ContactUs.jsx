@@ -17,6 +17,7 @@ const ContactUs = () => {
         message: ""
     })
     const id = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
     // console.log(id.userId)
     const [loading, setLoading] = useState(false);
     const sendEmail = async (e) => {
@@ -32,8 +33,12 @@ const ContactUs = () => {
         //     return;
         // }
         try {
-            const response = await API.post(`/query/addQuery/${id.userId}`, form);
-            // console.log(response)
+            const response = await API.post(`/query/addQuery/${id.userId}`, form,
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
+            // console.log(response
             if (response.status === 200 || response.status === 201) {
                 toast.success("Query Successfully Posted");
                 navigate("/");
@@ -113,7 +118,7 @@ const ContactUs = () => {
                         </div>
                         {
                             loading ? (
-                                <span className='w-full animate-spin h-12 flex justify-center items-center'><Loader size={40} color='black'/></span>
+                                <span className='w-full animate-spin h-12 flex justify-center items-center'><Loader size={40} color='black' /></span>
                             ) : (
                                 <button
                                     type="submit"
