@@ -32,9 +32,9 @@ exports.getReviews = async (req, res) => {
         // if (!Admin) {
         //     return res.status(404).json({ status: false, message: "Only admin can access" });
         // }
-        const getQuery = Query.find();
-        console.log(getQuery);
-        res.status(200).json({ status: true, getQuery, message: "Retrieved" });
+        const getQuery = await Query.find();
+        const getQueryCount = await Query.countDocuments();
+        res.status(200).json({ status: true, getQuery, getQueryCount, message: "Retrieved" });
     } catch (error) {
         res.status(501).json({ status: false, message: "Internal Error" });
     }
