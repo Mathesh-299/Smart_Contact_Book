@@ -26,12 +26,12 @@ exports.addQuery = async (req, res) => {
 
 
 exports.getReviews = async (req, res) => {
-    const { userId } = req.params.id;
+    // const { userId } = req.params.id;
     try {
-        const Admin = await User.findById(userId);
-        if (!Admin) {
-            return res.status(404).json({ status: false, message: "Only admin can access" });
-        }
+        // const Admin = await User.findById(userId);
+        // if (!Admin) {
+        //     return res.status(404).json({ status: false, message: "Only admin can access" });
+        // }
         const getQuery = Query.find();
         console.log(getQuery);
         res.status(200).json({ status: true, getQuery, message: "Retrieved" });
