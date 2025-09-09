@@ -38,7 +38,6 @@ const ContactUs = () => {
                     headers: { Authorization: `Bearer ${token}` }
                 }
             );
-            // console.log(response
             if (response.status === 200 || response.status === 201) {
                 toast.success("Query Successfully Posted");
                 navigate("/");

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FaChartBar, FaUser, FaUsers } from 'react-icons/fa';
+import { FaChartBar, FaQuoteRight, FaUser, FaUsers } from 'react-icons/fa';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -33,8 +33,9 @@ const Dashboard = () => {
                 const [userRes, countRes] = await Promise.all([
                     API.get('/user/all', { headers: { Authorization: `Bearer ${token}` } }),
                     API.get('/user/count', { headers: { Authorization: `Bearer ${token}` } }),
-                ]);
 
+                ]);
+                
                 setUsers(userRes.data);
                 setCount(countRes.data.count);
             } catch (err) {
@@ -81,6 +82,7 @@ const Dashboard = () => {
                     <SidebarButton icon={<FaChartBar />} text="Dashboard" path="/dashboard" />
                     <SidebarButton icon={<FaUsers />} text="All Users" path="/dashboard/users" />
                     <SidebarButton icon={<FaUser />} text="Add New User" path="/dashboard/addNewUser" />
+                    <SidebarButton icon={<FaQuoteRight />} text="Queries" path="/dashboard/QueryUser" />
                 </nav>
 
                 <div className="pt-4">

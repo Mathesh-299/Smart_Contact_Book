@@ -16,6 +16,7 @@ import ContactUs from "./pages/ContactUs"
 import Forgot_Password from "./pages/Forgot_password"
 import Form from "./pages/Form"
 import Home from "./pages/Home"
+import Queries from "./pages/Queries"
 
 export default function App() {
     return (
@@ -39,6 +40,7 @@ export default function App() {
                             <Route index element={<DashboardHome />} />
                             <Route path="users" element={<User />} />
                             <Route path="addNewUser" element={<AddNewUser />} />
+                            <Route path="QueryUser" element={<Queries />} />
                         </Route>
                     </Routes>
                 </div>
