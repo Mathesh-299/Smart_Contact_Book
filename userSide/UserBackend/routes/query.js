@@ -4,6 +4,6 @@ const { authenticateJWT, requireAdmin } = require("../middleware/userMiddleware"
 const router = express.Router();
 
 router.post("/addQuery/:id", authenticateJWT, addQuery)
-router.get("/getQuery/:id", authenticateJWT, requireAdmin, getReviews);
+router.get("/getQuery", authenticateJWT, requireAdmin, getReviews);
 
 module.exports = router
